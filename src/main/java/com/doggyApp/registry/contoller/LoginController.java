@@ -14,4 +14,9 @@ public class LoginController {
         String testString = "working";
         return ResponseEntity.status(200).body(testString);
     }
+
+    @GetMapping("/error-test")
+    public ResponseEntity<String> testErrorResponse() {
+        throw new RuntimeException("Someone pressed the button");
+    }
 }
