@@ -1,14 +1,11 @@
 package com.doggyApp.registry.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "organizations")
@@ -27,6 +24,7 @@ public class Organization {
     @Column(name = "email")
     private String email;
 
+    @JsonIgnore
     @NotBlank
     @Size(min = 8, max = 20)
     @Pattern(
@@ -36,13 +34,14 @@ public class Organization {
     @Column
     private String password;
 
+    public int getId()       { return id; }
+    public String getName()  { return name; }
+    public String getEmail() { return email; }
+    String getPassword()     { return password; }
 
-
-    
-
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
-    private List<Dog> dogs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<>();
+//    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+//    private Set<Dog> dogs;
+//
+//    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+//    private Set<User> users;
 }

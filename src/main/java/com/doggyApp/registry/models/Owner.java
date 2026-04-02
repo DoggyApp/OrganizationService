@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "owners")
@@ -21,7 +22,7 @@ public class Owner {
     private String name;
 
     @Column(name = "email")
-    private Email email;
+    private String email;
 
     @Column(name = "phone_number")
     @ValidPhone(region = "US")
@@ -45,7 +46,7 @@ public class Owner {
 
 
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Dog> dogs = new ArrayList<>();
+//    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+//    private Set<Dog> dogs;
 
 }

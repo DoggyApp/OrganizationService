@@ -1,9 +1,7 @@
 package com.doggyApp.registry.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "dogs")
@@ -31,21 +29,36 @@ public class Dog {
 
 
 
-    @OneToMany(mappedBy = "dog")
-    @JoinColumn(name = "alert_id")
-    private List<Alert> alerts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "dog")
-    @JoinColumn(name = "like_id")
-    private List<Like> likes = new ArrayList<>();
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
-    @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL)
-    @JoinColumn(name = "vaccine_id")
-    private List<Vaccine> vaccines = new ArrayList<>();
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
-    @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL)
-    @JoinColumn(name = "note_id")
-    private List<Note> notes = new ArrayList<>();
+    public int getId()       { return id; }
+    public String getName()  { return name; }
+    public String getBreed() { return breed; }
+    public int getAge()      { return age; }
+    public int getWeight()   { return number; }
+    public String getImage() { return image; }
+
+//
+//    @OneToMany(mappedBy = "dog")
+//    private Set<Alert> alerts;
+//
+//    @OneToMany(mappedBy = "dog")
+//    private Set<Like> likes;
+//
+//    @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL)
+//    private Set<Vaccine> vaccines;
+//
+//    @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL)
+//    private Set<Note> notes;
 
 
 }

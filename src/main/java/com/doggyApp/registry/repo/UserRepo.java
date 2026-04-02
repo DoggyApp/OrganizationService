@@ -1,4 +1,12 @@
-package com.doggyApp.registry.service;
+package com.doggyApp.registry.repo;
 
-public class UserRepo {
+import com.doggyApp.registry.models.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepo extends JpaRepository<User, Integer> {
+    Optional<User> findByEmail(String email);
 }

@@ -23,5 +23,8 @@ public class Vaccine {
 
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dog_id")
+    private Dog dog;
 
 }

@@ -18,6 +18,9 @@ public class Like {
     private String like;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dog_id")
+    private Dog dog;
 
 
 }

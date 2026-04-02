@@ -1,10 +1,9 @@
 package com.doggyApp.registry.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
@@ -22,20 +21,33 @@ public class Event {
     private String description;
 
     @Column(name = "start_time")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    private Date endTime;
+    private LocalDateTime endTime;
 
 
 
-    @ManyToOne
-    @JoinColumn(name = "trainer")
-    private List<User> users = new ArrayList<>();
+    // FK projections — lets Angular know which user/dog without triggering lazy load
+    @Column(name = "users_user_id", insertable = false, updatable = false)
+    private Integer userId;
 
-    @ManyToOne
-    @JoinColumn(name = "dog")
-    private List<Dog> dogs = new ArrayList<>();
+    @Column(name = "dogs_dog_id", insertable = false, updatable = false)
+    private Integer dogId;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User users;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Dog dogs;
+
+    public int getId()                  { return id; }
+    public String getEvent()            { return event; }
+    public String getDescription()      { return description; }
+    public LocalDateTime getStartTime() { return startTime; }
+    public LocalDateTime getEndTime()   { return endTime; }
+    public Integer getUserId()          { return userId; }
+    public Integer getDogId()           { return dogId; }
 }

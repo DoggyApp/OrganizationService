@@ -18,5 +18,9 @@ public class Note {
     private String note;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dog_id")
+    private Dog dog;
+
 
 }
