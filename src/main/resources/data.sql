@@ -3,10 +3,11 @@
 -- ================================================
 
 -- Organizations (3)
+-- plaintext passwords: OrgPass1! / OrgPass2! / OrgPass3!
 INSERT INTO organizations (name, email, password) VALUES
-('Pawsome Rescue',       'pawsome@rescue.com',          'OrgPass1!'),
-('Happy Tails Shelter',  'info@happytails.com',          'OrgPass2!'),
-('Best Friends Kennel',  'contact@bestfriends.com',      'OrgPass3!');
+('Pawsome Rescue',       'pawsome@rescue.com',          '$2b$10$kdvnLLUItTZxoLk6pJchZeRXOYpL.21Rg4.sxqlNbfrr4ZHB87Lea'),  -- OrgPass1!
+('Happy Tails Shelter',  'info@happytails.com',          '$2b$10$AJ/sTESnSAjwTUwYM4JDOuh6zlDLq6W1T4KNWtmZsexwRV.a9PHHG'),  -- OrgPass2!
+('Best Friends Kennel',  'contact@bestfriends.com',      '$2b$10$OcwLr6gyXupXp/jY6U8gk.EIsnJphaIb5nje4og85FK0askqhHDtu');  -- OrgPass3!
 
 -- Owners (30 total, 10 per organization)
 INSERT INTO owners (name, email, phone_number) VALUES
@@ -82,26 +83,26 @@ INSERT INTO dogs (dog_name, breed, age, weight, image, organization_id, owner_id
 ('Willow',  'Dachshund',            6, 22, null, 3, 30);
 
 -- Users (15 total, 5 per organization)
--- Password for all: UserPass1!  (meets: uppercase U, lowercase, digit 1, special !)
+-- All users share the same password for testing: UserPass1!
 INSERT INTO users (first_name, last_name, email, password, organization_id) VALUES
 -- Org 1
-('Tom',  'Baker',  'tom.baker@pawsome.com',   'UserPass1!', 1),
-('Sara', 'Clark',  'sara.clark@pawsome.com',  'UserPass1!', 1),
-('Mike', 'Evans',  'mike.evans@pawsome.com',  'UserPass1!', 1),
-('Lisa', 'Foster', 'lisa.foster@pawsome.com', 'UserPass1!', 1),
-('Jake', 'Grant',  'jake.grant@pawsome.com',  'UserPass1!', 1),
+('Tom',  'Baker',  'tom.baker@pawsome.com',   '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 1),  -- UserPass1!
+('Sara', 'Clark',  'sara.clark@pawsome.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 1),  -- UserPass1!
+('Mike', 'Evans',  'mike.evans@pawsome.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 1),  -- UserPass1!
+('Lisa', 'Foster', 'lisa.foster@pawsome.com', '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 1),  -- UserPass1!
+('Jake', 'Grant',  'jake.grant@pawsome.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 1),  -- UserPass1!
 -- Org 2
-('Amy',  'Hughes', 'amy.hughes@happytails.com', 'UserPass1!', 2),
-('Ben',  'Ingram', 'ben.ingram@happytails.com', 'UserPass1!', 2),
-('Cara', 'Jones',  'cara.jones@happytails.com', 'UserPass1!', 2),
-('Dan',  'Knox',   'dan.knox@happytails.com',   'UserPass1!', 2),
-('Eve',  'Lopez',  'eve.lopez@happytails.com',  'UserPass1!', 2),
+('Amy',  'Hughes', 'amy.hughes@happytails.com', '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 2),  -- UserPass1!
+('Ben',  'Ingram', 'ben.ingram@happytails.com', '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 2),  -- UserPass1!
+('Cara', 'Jones',  'cara.jones@happytails.com', '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 2),  -- UserPass1!
+('Dan',  'Knox',   'dan.knox@happytails.com',   '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 2),  -- UserPass1!
+('Eve',  'Lopez',  'eve.lopez@happytails.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 2),  -- UserPass1!
 -- Org 3
-('Fred', 'Mason',  'fred.mason@bestfriends.com',  'UserPass1!', 3),
-('Gina', 'Nash',   'gina.nash@bestfriends.com',   'UserPass1!', 3),
-('Hank', 'Owen',   'hank.owen@bestfriends.com',   'UserPass1!', 3),
-('Iris', 'Price',  'iris.price@bestfriends.com',  'UserPass1!', 3),
-('Joel', 'Quinn',  'joel.quinn@bestfriends.com',  'UserPass1!', 3);
+('Fred', 'Mason',  'fred.mason@bestfriends.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 3),  -- UserPass1!
+('Gina', 'Nash',   'gina.nash@bestfriends.com',   '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 3),  -- UserPass1!
+('Hank', 'Owen',   'hank.owen@bestfriends.com',   '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 3),  -- UserPass1!
+('Iris', 'Price',  'iris.price@bestfriends.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 3),  -- UserPass1!
+('Joel', 'Quinn',  'joel.quinn@bestfriends.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 3);  -- UserPass1!
 
 -- Vaccines (3 per dog: Bordetella, Rabies, DHPP — 90 total)
 INSERT INTO vaccines (vaccine, expire_date, dog_id) VALUES
@@ -266,24 +267,33 @@ INSERT INTO likes ("like", dog_id) VALUES
 ('Napping on soft surfaces', 29),  ('Being petted', 29),
 ('Sunbathing on the porch', 30),   ('Slow leisurely walks', 30);
 
+-- Locations (4 per organization: 1-4 = Org 1, 5-8 = Org 2, 9-12 = Org 3)
+INSERT INTO locations (name, org_id) VALUES
+('Boarding Room',  1), ('Training Field', 1), ('Play Area', 1), ('Off Location', 1),
+('Boarding Room',  2), ('Training Field', 2), ('Play Area', 2), ('Off Location', 2),
+('Boarding Room',  3), ('Training Field', 3), ('Play Area', 3), ('Off Location', 3);
+
 -- Events (15 total, all within Mon Apr 6 – Sun Apr 12, 2026)
 -- Dog 1 (Buddy) has 3 events; User 1 (Tom Baker) has 3 events — all overlapping.
 -- FK columns: users_user_id, dogs_dog_id (JPA default naming)
-INSERT INTO events (event, description, start_time, end_time, users_user_id, dogs_dog_id) VALUES
--- Dog 1 / User 1 — 3 events (satisfies both requirements)
-('Vet Appointment',  'Annual wellness exam for Buddy',         '2026-04-06 09:00:00', '2026-04-06 10:00:00',  1,  1),
-('Grooming Session', 'Full groom and nail trim for Buddy',     '2026-04-08 14:00:00', '2026-04-08 15:30:00',  1,  1),
-('Training Class',   'Basic obedience refresher for Buddy',   '2026-04-10 11:00:00', '2026-04-10 12:00:00',  1,  1),
+-- Location IDs: Org1→ 1=Boarding Room, 2=Training Field, 3=Play Area, 4=Off Location
+--               Org2→ 5=Boarding Room, 6=Training Field, 7=Play Area, 8=Off Location
+--               Org3→ 9=Boarding Room, 10=Training Field, 11=Play Area, 12=Off Location
+INSERT INTO events (event, description, location_id, start_time, end_time, users_user_id, dogs_dog_id) VALUES
+-- Dog 1 / User 1 (Org 1) — 3 events
+('Vet Appointment',  'Annual wellness exam for Buddy',         4,  '2026-04-06 09:00:00', '2026-04-06 10:00:00',  1,  1),
+('Grooming Session', 'Full groom and nail trim for Buddy',     1,  '2026-04-08 14:00:00', '2026-04-08 15:30:00',  1,  1),
+('Training Class',   'Basic obedience refresher for Buddy',   2,  '2026-04-10 11:00:00', '2026-04-10 12:00:00',  1,  1),
 -- Remaining 12 events spread across other users and dogs
-('Vet Appointment',  'Dental check for Luna',                  '2026-04-06 10:30:00', '2026-04-06 11:30:00',  2,  3),
-('Playdate',         'Off-leash play session for Daisy',       '2026-04-07 09:00:00', '2026-04-07 10:00:00',  3,  5),
-('Vet Appointment',  'Dental cleaning for Cooper',             '2026-04-07 14:00:00', '2026-04-07 15:00:00',  4,  8),
-('Playdate',         'Dog park outing for Molly',              '2026-04-08 10:00:00', '2026-04-08 11:00:00',  5,  9),
-('Training Class',   'Agility training for Sadie',             '2026-04-08 16:00:00', '2026-04-08 17:00:00',  6, 12),
-('Vaccine Booster',  'Bordetella booster for Duke',            '2026-04-09 09:30:00', '2026-04-09 10:00:00',  7, 11),
-('Vet Appointment',  'Eye drop check-up for Zeus',             '2026-04-09 13:00:00', '2026-04-09 14:00:00',  8, 15),
-('Grooming Session', 'Ear cleaning for Bruno',                 '2026-04-09 16:00:00', '2026-04-09 17:00:00',  9, 17),
-('Training Class',   'Scent work session for Jasper',          '2026-04-10 13:00:00', '2026-04-10 14:00:00', 10, 25),
-('Vet Appointment',  'Cardiac check for Zoe',                  '2026-04-10 15:00:00', '2026-04-10 16:00:00', 11, 24),
-('Playdate',         'Socialization session for Chloe',        '2026-04-11 10:00:00', '2026-04-11 11:00:00', 12, 14),
-('Vet Appointment',  'Senior wellness check for Willow',       '2026-04-12 11:00:00', '2026-04-12 12:30:00', 13, 30);
+('Vet Appointment',  'Dental check for Luna',                  4,  '2026-04-06 10:30:00', '2026-04-06 11:30:00',  2,  3),
+('Playdate',         'Off-leash play session for Daisy',       3,  '2026-04-07 09:00:00', '2026-04-07 10:00:00',  3,  5),
+('Grooming Session', 'Dental cleaning for Cooper',             1,  '2026-04-07 14:00:00', '2026-04-07 15:00:00',  4,  8),
+('Playdate',         'Dog park outing for Molly',              3,  '2026-04-08 10:00:00', '2026-04-08 11:00:00',  5,  9),
+('Training Class',   'Agility training for Sadie',             6,  '2026-04-08 16:00:00', '2026-04-08 17:00:00',  6, 12),
+('Vaccine Booster',  'Bordetella booster for Duke',            5,  '2026-04-09 09:30:00', '2026-04-09 10:00:00',  7, 11),
+('Vet Appointment',  'Eye drop check-up for Zeus',             8,  '2026-04-09 13:00:00', '2026-04-09 14:00:00',  8, 15),
+('Grooming Session', 'Ear cleaning for Bruno',                 5,  '2026-04-09 16:00:00', '2026-04-09 17:00:00',  9, 17),
+('Training Class',   'Scent work session for Jasper',          6,  '2026-04-10 13:00:00', '2026-04-10 14:00:00', 10, 25),
+('Vet Appointment',  'Cardiac check for Zoe',                  12, '2026-04-10 15:00:00', '2026-04-10 16:00:00', 11, 24),
+('Playdate',         'Socialization session for Chloe',        11, '2026-04-11 10:00:00', '2026-04-11 11:00:00', 12, 14),
+('Training Class',   'Senior wellness check for Willow',       10, '2026-04-12 11:00:00', '2026-04-12 12:30:00', 13, 30);

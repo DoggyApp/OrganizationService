@@ -1,9 +1,7 @@
 package com.doggyApp.registry.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "likes")
@@ -17,10 +15,14 @@ public class Like {
     @Column(name = "like")
     private String like;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_id")
     private Dog dog;
 
+    public int getId()      { return id; }
+    public String getLike() { return like; }
 
+    public void setLike(String like) { this.like = like; }
+    public void setDog(Dog dog)      { this.dog = dog; }
 }

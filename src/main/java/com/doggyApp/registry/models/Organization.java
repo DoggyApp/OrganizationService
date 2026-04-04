@@ -26,18 +26,14 @@ public class Organization {
 
     @JsonIgnore
     @NotBlank
-    @Size(min = 8, max = 20)
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&]).*$",
-            message = "Password must contain upper, lower, number, and special character"
-    )
-    @Column
+    @Column(length = 100)
     private String password;
 
     public int getId()       { return id; }
     public String getName()  { return name; }
     public String getEmail() { return email; }
-    String getPassword()     { return password; }
+    public String getPassword()  { return password; }
+    public void setPassword(String password) { this.password = password; }
 
 //    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 //    private Set<Dog> dogs;

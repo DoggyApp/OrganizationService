@@ -26,12 +26,7 @@ public class User {
 
     @JsonIgnore
     @NotBlank
-    @Size(min = 8, max = 20)
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&]).*$",
-            message = "Password must contain upper, lower, number, and special character"
-    )
-    @Column
+    @Column(length = 100)
     private String password;
 
     // Exposes the FK value directly so we can read the org ID without triggering lazy load
@@ -48,5 +43,11 @@ public class User {
     public String getLastName()    { return lastName; }
     public String getEmail()       { return email; }
     public int getOrganizationId() { return organizationId; }
-    String getPassword()           { return password; }
+    public String getPassword()    { return password; }
+
+    public void setFirstName(String firstName)       { this.firstName = firstName; }
+    public void setLastName(String lastName)         { this.lastName = lastName; }
+    public void setEmail(String email)               { this.email = email; }
+    public void setPassword(String password)         { this.password = password; }
+    public void setOrganization(Organization org)    { this.organization = org; }
 }

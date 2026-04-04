@@ -1,5 +1,6 @@
 package com.doggyApp.registry.contoller;
 
+import com.doggyApp.registry.models.Organization;
 import com.doggyApp.registry.models.User;
 import com.doggyApp.registry.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -50,5 +51,54 @@ public class UserController {
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
         return ResponseEntity.ok("Logged out");
+    }
+
+    // PUT /user/password
+    // User session only — changes the logged-in user's password.
+    // Body: { "oldPassword": "...", "newPassword": "..." }
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> body, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).body("User login required");
+        }
+        try {
+            userService.changePassword(user.getId(), body.get("oldPassword"), body.get("newPassword"));
+            return ResponseEntity.ok("Password updated");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    // DELETE /user/{id}
+    // Organization session only — deletes a user and cascades to all events they created.
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable int id, HttpSession session) {
+        Organization org = (Organization) session.getAttribute("organization");
+        if (org == null) {
+            return ResponseEntity.status(403).body("Organization login required");
+        }
+        try {
+            userService.delete(id, org.getId());
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    // POST /user/add
+    // Organization session only — adds a user belonging to the logged-in org.
+    // Body: { "firstName": "...", "lastName": "...", "email": "...", "password": "..." }
+    @PostMapping("/add")
+    public ResponseEntity<?> addUser(@RequestBody User user, HttpSession session) {
+        Organization org = (Organization) session.getAttribute("organization");
+        if (org == null) {
+            return ResponseEntity.status(401).body("Organization login required");
+        }
+        try {
+            return ResponseEntity.status(201).body(userService.create(user, org.getId()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 }
