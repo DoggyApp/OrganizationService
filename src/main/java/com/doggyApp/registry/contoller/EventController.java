@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/event")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class EventController {
 
     @Autowired
@@ -114,7 +113,7 @@ public class EventController {
         }
         try {
             event.setCreator(user);
-            return ResponseEntity.status(201).body(eventService.create(event, user.getId()));
+            return ResponseEntity.status(201).body(eventService.create(event, user.getId(), user.getOrganizationId()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
@@ -139,31 +138,7 @@ public class EventController {
         }
     }
 
-    // PUT /event/{id}/edit
-    // User session only — only the user who originally created the event may edit it.
-    // Organizations cannot edit events.
-    // Body: { "event": "...", "description": "...", "place": "...", "startTime": "...", "endTime": "..." }
-    @PutMapping("/{id}/edit")
-    public ResponseEntity<?> editEvent(@PathVariable int id,
-                                       @RequestBody Event updates,
-                                       HttpSession session) {
-        if (session.getAttribute("organization") != null) {
-            return ResponseEntity.status(403).body("Organizations cannot edit events");
-        }
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.status(401).body("User login required");
-        }
-        try {
-            Event event = eventService.getById(id);
-            if (user.getId() != event.getCreatorId()) {
-                return ResponseEntity.status(403).body("Only the creator of this event can edit it");
-            }
-            return ResponseEntity.ok(eventService.update(id, updates, user.getId()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
-    }
+
 
     // GET /event/all
 //    // Organization session → returns every event in their org.

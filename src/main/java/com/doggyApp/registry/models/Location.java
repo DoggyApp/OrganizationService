@@ -17,10 +17,20 @@ public class Location {
     @Column(name = "org_id")
     private int orgId;
 
-    public int getId()     { return id; }
-    public String getName() { return name; }
-    public int getOrgId()  { return orgId; }
+    @Column(name = "address")
+    private String address;
 
-    public void setName(String name)   { this.name = name; }
-    public void setOrgId(int orgId)    { this.orgId = orgId; }
+    @Column(name = "offsite")
+    private Boolean offsite;
+
+    public int getId()        { return id; }
+    public String getName()   { return name; }
+    public int getOrgId()     { return orgId; }
+    public String getAddress(){ return address; }
+    public Boolean isOffsite(){ return offsite; }
+
+    public void setName(String name)      { this.name = name; }
+    public void setOrgId(int orgId)       { this.orgId = orgId; }
+    public void setAddress(String address){ this.address = address; }
+    public void setOffsite(Boolean o)     { this.offsite = o; }
 }

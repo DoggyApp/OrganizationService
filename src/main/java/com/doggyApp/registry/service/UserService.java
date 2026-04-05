@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -59,6 +61,10 @@ public class UserService {
         eventRepo.clearAssignedUser(userId);
         eventRepo.deleteByCreator_Id(userId);
         userRepo.delete(user);
+    }
+
+    public List<User> getByOrganization(int orgId) {
+        return userRepo.findByOrganizationId(orgId);
     }
 
     // Only the org can call this — orgId comes from the session, not the request body.

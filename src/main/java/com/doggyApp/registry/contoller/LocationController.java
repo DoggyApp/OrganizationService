@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/location")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class LocationController {
 
     @Autowired
@@ -26,12 +27,16 @@ public class LocationController {
 
     // POST /location/add
     // Organization session only — adds a new location to the logged-in org.
-    // Body: { "name": "..." }
+    // Body: { "name": "...", "address": "..." }  (address is optional)
     @PostMapping("/add")
-    public ResponseEntity<?> addLocation(@RequestBody String name, HttpSession session) {
+    public ResponseEntity<?> addLocation(@RequestBody Map<String, String> body, HttpSession session) {
         Organization org = (Organization) session.getAttribute("organization");
         if (org == null) return ResponseEntity.status(403).body("Organization login required");
-        return ResponseEntity.status(201).body(locationService.add(name, org.getId()));
+        String name = body.get("name");
+        if (name == null || name.isBlank()) return ResponseEntity.status(400).body("name is required");
+        String address = body.get("address");
+        if (address == null || address.isBlank()) return ResponseEntity.status(400).body("address is required");
+        return ResponseEntity.status(201).body(locationService.add(name, address, org.getId()));
     }
 
     // DELETE /location/{id}

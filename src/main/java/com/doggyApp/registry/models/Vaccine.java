@@ -27,7 +27,7 @@ public class Vaccine {
 
     // True for Bordetella and Rabies — prevents deletion
     @Column(name = "standard")
-    private boolean standard;
+    private Boolean standard;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,11 +38,11 @@ public class Vaccine {
     public String getName()               { return name; }
     public LocalDate getVaccinatedDate()  { return vaccinatedDate; }
     public LocalDate getExpirationDate()  { return expirationDate; }
-    public boolean isStandard()           { return standard; }
+    public Boolean isStandard()            { return standard; }
 
     public void setName(String name)                    { this.name = name; }
     public void setVaccinatedDate(LocalDate date)       { this.vaccinatedDate = date; }
     public void setExpirationDate(LocalDate date)       { this.expirationDate = date; }
-    public void setStandard(boolean standard)           { this.standard = standard; }
+    public void setStandard(Boolean standard)            { this.standard = standard; }
     public void setDog(Dog dog)                         { this.dog = dog; }
 }

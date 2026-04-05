@@ -17,9 +17,10 @@ public class LocationService {
         return locationRepo.findByOrgId(orgId);
     }
 
-    public Location add(String name, int orgId) {
+    public Location add(String name, String address, int orgId) {
         Location location = new Location();
         location.setName(name);
+        location.setAddress(address);
         location.setOrgId(orgId);
         return locationRepo.save(location);
     }
@@ -27,6 +28,9 @@ public class LocationService {
     public void delete(int locationId, int orgId) {
         Location location = locationRepo.findByIdAndOrgId(locationId, orgId)
                 .orElseThrow(() -> new RuntimeException("Location not found"));
+        if (location.isOffsite()) {
+            throw new RuntimeException("The offsite location cannot be deleted");
+        }
         locationRepo.delete(location);
     }
 }

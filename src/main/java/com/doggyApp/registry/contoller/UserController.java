@@ -12,7 +12,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -84,6 +83,17 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
+    }
+
+    // GET /user/all
+    // Organization session only — returns all users belonging to the logged-in org.
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers(HttpSession session) {
+        Organization org = (Organization) session.getAttribute("organization");
+        if (org == null) {
+            return ResponseEntity.status(403).body("Organization login required");
+        }
+        return ResponseEntity.ok(userService.getByOrganization(org.getId()));
     }
 
     // POST /user/add

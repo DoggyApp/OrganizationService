@@ -182,7 +182,7 @@ public class DogService {
     public void deleteVaccine(int vaccineId, int orgId) {
         Vaccine vaccine = vaccineRepo.findByIdAndOrganizationId(vaccineId, orgId)
                 .orElseThrow(() -> new RuntimeException("Vaccine not found"));
-        if (vaccine.isStandard()) {
+        if (Boolean.TRUE.equals(vaccine.isStandard())) {
             throw new RuntimeException("Required vaccines cannot be deleted");
         }
         vaccineRepo.delete(vaccine);

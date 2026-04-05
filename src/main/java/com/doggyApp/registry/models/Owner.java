@@ -1,13 +1,13 @@
 package com.doggyApp.registry.models;
 
 import com.doggyApp.registry.validation.ValidPhone;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "owners")
@@ -46,10 +46,16 @@ public class Owner {
 
 
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"owner"})
+    private List<Dog> dogs = new ArrayList<>();
+
     public int getId()              { return id; }
     public String getName()         { return name; }
     public String getEmail()        { return email; }
     public String getPhoneNumber()  { return phoneNumber; }
+
+    public List<Dog> getDogs()                     { return dogs; }
 
     public void setName(String name)               { this.name = name; }
     public void setEmail(String email)             { this.email = email; }

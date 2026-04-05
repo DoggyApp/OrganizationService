@@ -2,9 +2,11 @@ package com.doggyApp.registry.service;
 
 import com.doggyApp.registry.models.Dog;
 import com.doggyApp.registry.models.Event;
+import com.doggyApp.registry.models.Location;
 import com.doggyApp.registry.models.User;
 import com.doggyApp.registry.repo.DogRepo;
 import com.doggyApp.registry.repo.EventRepo;
+import com.doggyApp.registry.repo.LocationRepo;
 import com.doggyApp.registry.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class EventService {
 
     @Autowired
     private DogRepo dogRepo;
+
+    @Autowired
+    private LocationRepo locationRepo;
 
     // For employees — only their own events
     public List<Event> getByUser(int userId) {
@@ -52,15 +57,18 @@ public class EventService {
     }
 
     // Updates event fields. Only the user who originally created the event is permitted.
-    public Event update(int eventId, Event updates, int userId) {
+    public Event update(int eventId, Event updates, int userId, int orgId) {
         Event event = eventRepo.findByIdAndCreator_Id(eventId, userId)
                 .orElseThrow(() -> new RuntimeException("Event not found or you are not the creator"));
 
         if (updates.getEvent() != null)       event.setEvent(updates.getEvent());
         if (updates.getDescription() != null) event.setDescription(updates.getDescription());
-        if (updates.getLocation() != null)    event.setLocation(updates.getLocation());
         if (updates.getStartTime() != null)   event.setStartTime(updates.getStartTime());
         if (updates.getEndTime() != null)     event.setEndTime(updates.getEndTime());
+
+        if (updates.getLocation() != null && updates.getLocation().getId() != 0) {
+            event.setLocation(resolveLocation(updates.getLocation().getId(), updates.getOffsiteAddress(), orgId));
+        }
 
         return eventRepo.save(event);
     }
@@ -97,11 +105,40 @@ public class EventService {
     }
 
     // Only users can create events. Dogs can be assigned afterwards via assignDog.
-    public Event create(Event event, int userId) {
+    public Event create(Event event, int userId, int orgId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (event.getLocation() == null || event.getLocation().getId() == 0) {
+            throw new RuntimeException("A location is required");
+        }
+        event.setLocation(resolveLocation(event.getLocation().getId(), event.getOffsiteAddress(), orgId));
+
         event.setUsers(user);
         return eventRepo.save(event);
+    }
+
+    // Validates that the location belongs to this org.
+    // If the location is on-site, returns it as-is (address is fixed from the org's record).
+    // If the location is offsite, creates a new Location row with the user-supplied address
+    // so each offsite event has its own address without overwriting shared records.
+    private Location resolveLocation(int locationId, String offsiteAddress, int orgId) {
+        Location location = locationRepo.findByIdAndOrgId(locationId, orgId)
+                .orElseThrow(() -> new RuntimeException("Location not found in your organization"));
+
+        if (!Boolean.TRUE.equals(location.isOffsite())) {
+            return location;
+        }
+
+        if (offsiteAddress == null || offsiteAddress.isBlank()) {
+            throw new RuntimeException("An address is required for offsite locations");
+        }
+
+        Location offsite = new Location();
+        offsite.setName(location.getName());
+        offsite.setOrgId(orgId);
+        offsite.setOffsite(true);
+        offsite.setAddress(offsiteAddress.trim());
+        return locationRepo.save(offsite);
     }
 }

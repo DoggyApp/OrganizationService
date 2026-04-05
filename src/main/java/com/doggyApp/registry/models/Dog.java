@@ -1,6 +1,7 @@
 package com.doggyApp.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -33,19 +34,16 @@ public class Dog {
 
 
 
-    // FK projection — lets the frontend know the owner ID without triggering a lazy load
-    @Column(name = "owner_id", insertable = false, updatable = false)
-    private Integer ownerId;
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
+    @JsonIgnoreProperties({"dogs", "hibernateLazyInitializer"})
     private Owner owner;
+
 
     @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Alert> alerts = new ArrayList<>();
@@ -65,7 +63,7 @@ public class Dog {
     public int getAge()                 { return age; }
     public int getWeight()              { return number; }
     public String getImage()            { return image; }
-    public Integer getOwnerId()         { return ownerId; }
+    public Owner getOwner()              { return owner; }
     public List<Alert> getAlerts()      { return alerts; }
     public List<Like> getLikes()        { return likes; }
     public List<Note> getNotes()        { return notes; }

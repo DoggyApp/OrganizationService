@@ -1,6 +1,7 @@
 package com.doggyApp.registry.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -24,7 +25,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank
     @Column(length = 100)
     private String password;

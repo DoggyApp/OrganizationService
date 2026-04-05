@@ -8,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.doggyapp.registry")
 public class RegistryApplication {
 
 	public static void main(String[] args) {
@@ -21,9 +20,7 @@ public class RegistryApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(String[] args) {
-		return runner -> {
-			System.out.println("Working");
-		};
+	public CommandLineRunner commandLineRunner() {
+		return args -> System.out.println("Working");
 	}
 }

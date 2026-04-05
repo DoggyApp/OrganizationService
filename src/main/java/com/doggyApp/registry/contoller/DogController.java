@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/dog")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class DogController {
 
     @Autowired

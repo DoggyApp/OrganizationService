@@ -4,83 +4,69 @@
 
 -- Organizations (3)
 -- plaintext passwords: OrgPass1! / OrgPass2! / OrgPass3!
-INSERT INTO organizations (name, email, password) VALUES
-('Pawsome Rescue',       'pawsome@rescue.com',          '$2b$10$kdvnLLUItTZxoLk6pJchZeRXOYpL.21Rg4.sxqlNbfrr4ZHB87Lea'),  -- OrgPass1!
-('Happy Tails Shelter',  'info@happytails.com',          '$2b$10$AJ/sTESnSAjwTUwYM4JDOuh6zlDLq6W1T4KNWtmZsexwRV.a9PHHG'),  -- OrgPass2!
-('Best Friends Kennel',  'contact@bestfriends.com',      '$2b$10$OcwLr6gyXupXp/jY6U8gk.EIsnJphaIb5nje4og85FK0askqhHDtu');  -- OrgPass3!
+INSERT INTO organizations (name, email, password, subscription_start, subscription_expiration) VALUES
+('Pawsome Rescue',       'pawsome@rescue.com',     '$2b$10$kdvnLLUItTZxoLk6pJchZeRXOYpL.21Rg4.sxqlNbfrr4ZHB87Lea', '2026-04-04', '2026-04-04'),  -- OrgPass1! active
+('Happy Tails Shelter',  'info@happytails.com',    '$2b$10$AJ/sTESnSAjwTUwYM4JDOuh6zlDLq6W1T4KNWtmZsexwRV.a9PHHG', '2025-03-15', '2026-03-15'),  -- OrgPass2! expiring soon
+('Best Friends Kennel',  'contact@bestfriends.com','$2b$10$OcwLr6gyXupXp/jY6U8gk.EIsnJphaIb5nje4og85FK0askqhHDtu', '2026-01-10', '2027-01-10');  -- OrgPass3! recently renewed
 
--- Owners (30 total, 10 per organization)
+-- Owners (12 total, 4 per organization — only owners tied to dogs)
 INSERT INTO owners (name, email, phone_number) VALUES
--- Org 1
-('Alice Johnson',   'alice.j@email.com',    '+12025550101'),
-('Bob Smith',       'bob.smith@email.com',  '+12025550102'),
-('Carol White',     'carol.w@email.com',    '+12025550103'),
-('David Brown',     'david.b@email.com',    '+12025550104'),
-('Emma Davis',      'emma.d@email.com',     '+12025550105'),
-('Frank Miller',    'frank.m@email.com',    '+12025550106'),
-('Grace Wilson',    'grace.w@email.com',    '+12025550107'),
-('Henry Moore',     'henry.m@email.com',    '+12025550108'),
-('Iris Taylor',     'iris.t@email.com',     '+12025550109'),
-('Jack Anderson',   'jack.a@email.com',     '+12025550110'),
--- Org 2
-('Karen Thomas',    'karen.t@email.com',    '+12025550111'),
-('Liam Jackson',    'liam.j@email.com',     '+12025550112'),
-('Mia Harris',      'mia.h@email.com',      '+12025550113'),
-('Noah Martin',     'noah.m@email.com',     '+12025550114'),
-('Olivia Lee',      'olivia.l@email.com',   '+12025550115'),
-('Paul Walker',     'paul.w@email.com',     '+12025550116'),
-('Quinn Hall',      'quinn.h@email.com',    '+12025550117'),
-('Rachel Allen',    'rachel.a@email.com',   '+12025550118'),
-('Sam Young',       'sam.y@email.com',      '+12025550119'),
-('Tina King',       'tina.k@email.com',     '+12025550120'),
--- Org 3
-('Uma Scott',       'uma.s@email.com',      '+12025550121'),
-('Victor Green',    'victor.g@email.com',   '+12025550122'),
-('Wendy Adams',     'wendy.a@email.com',    '+12025550123'),
-('Xander Baker',    'xander.b@email.com',   '+12025550124'),
-('Yara Nelson',     'yara.n@email.com',     '+12025550125'),
-('Zoe Carter',      'zoe.c@email.com',      '+12025550126'),
-('Aaron Mitchell',  'aaron.m@email.com',    '+12025550127'),
-('Bella Perez',     'bella.p@email.com',    '+12025550128'),
-('Carlos Roberts',  'carlos.r@email.com',   '+12025550129'),
-('Diana Turner',    'diana.t@email.com',    '+12025550130');
+-- Org 1: Pawsome Rescue clients (ids 1–4)
+('Alice Johnson',   'alice.j@email.com',    '+12025550101'),  -- id=1,  client of Org 1
+('Bob Smith',       'bob.smith@email.com',  '+12025550102'),  -- id=2,  client of Org 1
+('Carol White',     'carol.w@email.com',    '+12025550103'),  -- id=3,  client of Org 1
+('David Brown',     'david.b@email.com',    '+12025550104'),  -- id=4,  client of Org 1
+-- Org 2: Happy Tails Shelter clients (ids 5–8)
+('Karen Thomas',    'karen.t@email.com',    '+12025550111'),  -- id=5,  client of Org 2
+('Liam Jackson',    'liam.j@email.com',     '+12025550112'),  -- id=6,  client of Org 2
+('Mia Harris',      'mia.h@email.com',      '+12025550113'),  -- id=7,  client of Org 2
+('Noah Martin',     'noah.m@email.com',     '+12025550114'),  -- id=8,  client of Org 2
+-- Org 3: Best Friends Kennel clients (ids 9–12)
+('Uma Scott',       'uma.s@email.com',      '+12025550121'),  -- id=9,  client of Org 3
+('Victor Green',    'victor.g@email.com',   '+12025550122'),  -- id=10, client of Org 3
+('Wendy Adams',     'wendy.a@email.com',    '+12025550123'),  -- id=11, client of Org 3
+('Xander Baker',    'xander.b@email.com',   '+12025550124');  -- id=12, client of Org 3
 
 -- Dogs (30 total, 10 per organization)
 -- Columns: dog_name, breed, age, weight, image, organization_id, owner_id
+-- Owner distribution per org:
+--   Org 1: owner 1 → 3 dogs, owner 2 → 4 dogs, owner 3 → 2 dogs, owner 4 → 1 dog
+--   Org 2: owner 5 → 2 dogs, owner 6 → 4 dogs, owner 7 → 3 dogs, owner 8 → 1 dog
+--   Org 3: owner 9 → 3 dogs, owner 10 → 4 dogs, owner 11 → 2 dogs, owner 12 → 1 dog
 INSERT INTO dogs (dog_name, breed, age, weight, image, organization_id, owner_id) VALUES
--- Org 1 (dogs 1-10, owners 1-10)
-('Buddy',   'Labrador Retriever',   3, 65, null, 1,  1),
-('Max',     'German Shepherd',      5, 75, null, 1,  2),
-('Luna',    'Golden Retriever',     2, 55, null, 1,  3),
-('Charlie', 'Bulldog',              4, 50, null, 1,  4),
-('Daisy',   'Poodle',               1, 15, null, 1,  5),
-('Rocky',   'Beagle',               6, 25, null, 1,  6),
-('Bella',   'Rottweiler',           3, 90, null, 1,  7),
-('Cooper',  'Yorkshire Terrier',    2,  7, null, 1,  8),
-('Molly',   'Boxer',                4, 65, null, 1,  9),
-('Tucker',  'Dachshund',            5, 20, null, 1, 10),
--- Org 2 (dogs 11-20, owners 11-20)
-('Duke',    'Siberian Husky',       3, 55, null, 2, 11),
-('Sadie',   'Border Collie',        4, 45, null, 2, 12),
-('Bear',    'Shih Tzu',             2, 12, null, 2, 13),
-('Chloe',   'Great Dane',           1,100, null, 2, 14),
-('Zeus',    'Australian Shepherd',  5, 60, null, 2, 15),
-('Penny',   'Doberman',             3, 80, null, 2, 16),
-('Bruno',   'Cocker Spaniel',       6, 30, null, 2, 17),
-('Stella',  'Chihuahua',            2,  6, null, 2, 18),
-('Diesel',  'Maltese',              4,  8, null, 2, 19),
-('Lola',    'Pomeranian',           3,  7, null, 2, 20),
--- Org 3 (dogs 21-30, owners 21-30)
-('Atlas',   'Labrador Retriever',   2, 70, null, 3, 21),
-('Nova',    'Golden Retriever',     1, 50, null, 3, 22),
-('Rex',     'German Shepherd',      7, 80, null, 3, 23),
-('Zoe',     'Boxer',                3, 60, null, 3, 24),
-('Jasper',  'Beagle',               4, 28, null, 3, 25),
-('Ruby',    'Poodle',               2, 18, null, 3, 26),
-('Hunter',  'Siberian Husky',       5, 58, null, 3, 27),
-('Pepper',  'Border Collie',        3, 42, null, 3, 28),
-('Ace',     'Bulldog',              4, 52, null, 3, 29),
-('Willow',  'Dachshund',            6, 22, null, 3, 30);
+-- Org 1
+('Buddy',   'Labrador Retriever',   3, 65, 'https://images.dog.ceo/breeds/labrador/n02099712_4323.jpg',                  1,  1),
+('Max',     'German Shepherd',      5, 75, 'broken',                                                                        1,  1),  -- intentional broken: test missing-image UI
+('Luna',    'Golden Retriever',     2, 55, 'https://images.dog.ceo/breeds/retriever-golden/n02099601_3004.jpg',              1,  1),
+('Charlie', 'Bulldog',              4, 50, 'https://images.dog.ceo/breeds/bulldog-english/jager-1.jpg',                      1,  2),
+('Daisy',   'Poodle',               1, 15, 'https://images.dog.ceo/breeds/poodle-toy/n02113624_2784.jpg',                    1,  2),
+('Rocky',   'Beagle',               6, 25, 'https://images.dog.ceo/breeds/beagle/n02088364_11136.jpg',                       1,  2),
+('Bella',   'Rottweiler',           3, 90, 'https://images.dog.ceo/breeds/rottweiler/n02106550_4920.jpg',                    1,  2),
+('Cooper',  'Yorkshire Terrier',    2,  7, 'https://images.dog.ceo/breeds/terrier-yorkshire/IMG_3001.jpg',                   1,  3),
+('Molly',   'Boxer',                4, 65, 'https://images.dog.ceo/breeds/boxer/n02108089_3162.jpg',                         1,  3),
+('Tucker',  'Dachshund',            5, 20, 'https://images.dog.ceo/breeds/dachshund/dachshund-5.jpg',                        1,  4),
+-- Org 2
+('Duke',    'Siberian Husky',       3, 55, 'broken',                                                                        2,  5),  -- intentional broken: test missing-image UI
+('Sadie',   'Border Collie',        4, 45, 'https://images.dog.ceo/breeds/collie-border/n02106166_2685.jpg',                 2,  5),
+('Bear',    'Shih Tzu',             2, 12, 'https://images.dog.ceo/breeds/shihtzu/n02086240_788.jpg',                        2,  6),
+('Chloe',   'Great Dane',           1,100, 'https://images.dog.ceo/breeds/dane-great/n02109047_1005.jpg',                    2,  6),
+('Zeus',    'Australian Shepherd',  5, 60, 'https://images.dog.ceo/breeds/australian-shepherd/pepper2.jpg',                 2,  6),
+('Penny',   'Doberman',             3, 80, 'https://images.dog.ceo/breeds/doberman/n02107142_4017.jpg',                      2,  6),
+('Bruno',   'Cocker Spaniel',       6, 30, 'https://images.dog.ceo/breeds/spaniel-cocker/ekko1.jpg',                        2,  7),
+('Stella',  'Chihuahua',            2,  6, 'https://images.dog.ceo/breeds/chihuahua/n02085620_7613.jpg',                     2,  7),
+('Diesel',  'Maltese',              4,  8, 'https://images.dog.ceo/breeds/maltese/n02085936_4245.jpg',                       2,  7),
+('Lola',    'Pomeranian',           3,  7, 'https://images.dog.ceo/breeds/pomeranian/n02112018_11641.jpg',                   2,  8),
+-- Org 3
+('Atlas',   'Labrador Retriever',   2, 70, 'broken',                                                                        3,  9),  -- intentional broken: test missing-image UI
+('Nova',    'Golden Retriever',     1, 50, 'https://images.dog.ceo/breeds/retriever-golden/n02099601_7771.jpg',              3,  9),
+('Rex',     'German Shepherd',      7, 80, 'https://images.dog.ceo/breeds/german-shepherd/n02106662_18268.jpg',              3,  9),
+('Zoe',     'Boxer',                3, 60, 'https://images.dog.ceo/breeds/boxer/n02108089_10901.jpg',                        3, 10),
+('Jasper',  'Beagle',               4, 28, 'https://images.dog.ceo/breeds/beagle/n02088364_12124.jpg',                      3, 10),
+('Ruby',    'Poodle',               2, 18, 'https://images.dog.ceo/breeds/poodle-standard/n02113799_2280.jpg',               3, 10),
+('Hunter',  'Siberian Husky',       5, 58, 'https://images.dog.ceo/breeds/husky/n02110185_1469.jpg',                         3, 10),
+('Pepper',  'Border Collie',        3, 42, 'https://images.dog.ceo/breeds/collie-border/n02106166_90.jpg',                   3, 11),
+('Ace',     'Bulldog',              4, 52, 'https://images.dog.ceo/breeds/bulldog-english/jager-2.jpg',                      3, 11),
+('Willow',  'Dachshund',            6, 22, 'https://images.dog.ceo/breeds/dachshund/Daschund-2.jpg',                         3, 12);
 
 -- Users (15 total, 5 per organization)
 -- All users share the same password for testing: UserPass1!
@@ -105,67 +91,67 @@ INSERT INTO users (first_name, last_name, email, password, organization_id) VALU
 ('Joel', 'Quinn',  'joel.quinn@bestfriends.com',  '$2b$10$otw3dDWlH/ccJqOdQ7Q1cOS7MG6ROqIIlaG5mtWBtT0bdyTNTKh..', 3);  -- UserPass1!
 
 -- Vaccines (3 per dog: Bordetella, Rabies, DHPP — 90 total)
-INSERT INTO vaccines (vaccine, expire_date, dog_id) VALUES
+INSERT INTO vaccines (vaccine_name, expiration_date, dog_id, standard) VALUES
 -- Dog 1 Buddy
-('Bordetella', '2026-06-01', 1), ('Rabies', '2027-01-15', 1), ('DHPP', '2026-09-01', 1),
+('Bordetella', '2026-06-01', 1, true), ('Rabies', '2027-01-15', 1, true), ('DHPP', '2026-09-01', 1, false),
 -- Dog 2 Max
-('Bordetella', '2026-07-01', 2), ('Rabies', '2027-03-20', 2), ('DHPP', '2026-11-01', 2),
+('Bordetella', '2026-07-01', 2, true), ('Rabies', '2027-03-20', 2, true), ('DHPP', '2026-11-01', 2, false),
 -- Dog 3 Luna
-('Bordetella', '2026-05-15', 3), ('Rabies', '2027-05-10', 3), ('DHPP', '2026-08-15', 3),
+('Bordetella', '2026-05-15', 3, true), ('Rabies', '2027-05-10', 3, true), ('DHPP', '2026-08-15', 3, false),
 -- Dog 4 Charlie
-('Bordetella', '2026-08-01', 4), ('Rabies', '2027-02-28', 4), ('DHPP', '2026-12-01', 4),
+('Bordetella', '2026-08-01', 4, true), ('Rabies', '2027-02-28', 4, true), ('DHPP', '2026-12-01', 4, false),
 -- Dog 5 Daisy
-('Bordetella', '2026-09-01', 5), ('Rabies', '2027-06-15', 5), ('DHPP', '2027-01-01', 5),
+('Bordetella', '2026-09-01', 5, true), ('Rabies', '2027-06-15', 5, true), ('DHPP', '2027-01-01', 5, false),
 -- Dog 6 Rocky
-('Bordetella', '2026-04-15', 6), ('Rabies', '2026-11-30', 6), ('DHPP', '2026-07-15', 6),
+('Bordetella', '2026-04-15', 6, true), ('Rabies', '2026-11-30', 6, true), ('DHPP', '2026-07-15', 6, false),
 -- Dog 7 Bella
-('Bordetella', '2026-10-01', 7), ('Rabies', '2027-04-10', 7), ('DHPP', '2027-02-01', 7),
+('Bordetella', '2026-10-01', 7, true), ('Rabies', '2027-04-10', 7, true), ('DHPP', '2027-02-01', 7, false),
 -- Dog 8 Cooper
-('Bordetella', '2026-06-15', 8), ('Rabies', '2027-01-20', 8), ('DHPP', '2026-09-15', 8),
+('Bordetella', '2026-06-15', 8, true), ('Rabies', '2027-01-20', 8, true), ('DHPP', '2026-09-15', 8, false),
 -- Dog 9 Molly
-('Bordetella', '2026-11-01', 9), ('Rabies', '2027-07-05', 9), ('DHPP', '2027-03-01', 9),
+('Bordetella', '2026-11-01', 9, true), ('Rabies', '2027-07-05', 9, true), ('DHPP', '2027-03-01', 9, false),
 -- Dog 10 Tucker
-('Bordetella', '2026-05-01', 10), ('Rabies', '2026-12-25', 10), ('DHPP', '2026-08-01', 10),
+('Bordetella', '2026-05-01', 10, true), ('Rabies', '2026-12-25', 10, true), ('DHPP', '2026-08-01', 10, false),
 -- Dog 11 Duke
-('Bordetella', '2026-06-01', 11), ('Rabies', '2027-01-15', 11), ('DHPP', '2026-09-01', 11),
+('Bordetella', '2026-06-01', 11, true), ('Rabies', '2027-01-15', 11, true), ('DHPP', '2026-09-01', 11, false),
 -- Dog 12 Sadie
-('Bordetella', '2026-07-15', 12), ('Rabies', '2027-02-10', 12), ('DHPP', '2026-10-15', 12),
+('Bordetella', '2026-07-15', 12, true), ('Rabies', '2027-02-10', 12, true), ('DHPP', '2026-10-15', 12, false),
 -- Dog 13 Bear
-('Bordetella', '2026-08-20', 13), ('Rabies', '2027-03-15', 13), ('DHPP', '2026-11-20', 13),
+('Bordetella', '2026-08-20', 13, true), ('Rabies', '2027-03-15', 13, true), ('DHPP', '2026-11-20', 13, false),
 -- Dog 14 Chloe
-('Bordetella', '2026-09-10', 14), ('Rabies', '2027-04-20', 14), ('DHPP', '2026-12-10', 14),
+('Bordetella', '2026-09-10', 14, true), ('Rabies', '2027-04-20', 14, true), ('DHPP', '2026-12-10', 14, false),
 -- Dog 15 Zeus
-('Bordetella', '2026-10-05', 15), ('Rabies', '2027-05-25', 15), ('DHPP', '2027-01-05', 15),
+('Bordetella', '2026-10-05', 15, true), ('Rabies', '2027-05-25', 15, true), ('DHPP', '2027-01-05', 15, false),
 -- Dog 16 Penny
-('Bordetella', '2026-05-20', 16), ('Rabies', '2026-12-10', 16), ('DHPP', '2026-08-20', 16),
+('Bordetella', '2026-05-20', 16, true), ('Rabies', '2026-12-10', 16, true), ('DHPP', '2026-08-20', 16, false),
 -- Dog 17 Bruno
-('Bordetella', '2026-11-15', 17), ('Rabies', '2027-06-30', 17), ('DHPP', '2027-02-15', 17),
+('Bordetella', '2026-11-15', 17, true), ('Rabies', '2027-06-30', 17, true), ('DHPP', '2027-02-15', 17, false),
 -- Dog 18 Stella
-('Bordetella', '2026-06-25', 18), ('Rabies', '2027-01-30', 18), ('DHPP', '2026-09-25', 18),
+('Bordetella', '2026-06-25', 18, true), ('Rabies', '2027-01-30', 18, true), ('DHPP', '2026-09-25', 18, false),
 -- Dog 19 Diesel
-('Bordetella', '2026-12-01', 19), ('Rabies', '2027-07-15', 19), ('DHPP', '2027-03-01', 19),
+('Bordetella', '2026-12-01', 19, true), ('Rabies', '2027-07-15', 19, true), ('DHPP', '2027-03-01', 19, false),
 -- Dog 20 Lola
-('Bordetella', '2026-04-20', 20), ('Rabies', '2026-11-10', 20), ('DHPP', '2026-07-20', 20),
+('Bordetella', '2026-04-20', 20, true), ('Rabies', '2026-11-10', 20, true), ('DHPP', '2026-07-20', 20, false),
 -- Dog 21 Atlas
-('Bordetella', '2026-07-01', 21), ('Rabies', '2027-02-15', 21), ('DHPP', '2026-10-01', 21),
+('Bordetella', '2026-07-01', 21, true), ('Rabies', '2027-02-15', 21, true), ('DHPP', '2026-10-01', 21, false),
 -- Dog 22 Nova
-('Bordetella', '2026-08-10', 22), ('Rabies', '2027-03-20', 22), ('DHPP', '2026-11-10', 22),
+('Bordetella', '2026-08-10', 22, true), ('Rabies', '2027-03-20', 22, true), ('DHPP', '2026-11-10', 22, false),
 -- Dog 23 Rex
-('Bordetella', '2026-05-05', 23), ('Rabies', '2026-12-01', 23), ('DHPP', '2026-08-05', 23),
+('Bordetella', '2026-05-05', 23, true), ('Rabies', '2026-12-01', 23, true), ('DHPP', '2026-08-05', 23, false),
 -- Dog 24 Zoe
-('Bordetella', '2026-09-20', 24), ('Rabies', '2027-04-25', 24), ('DHPP', '2026-12-20', 24),
+('Bordetella', '2026-09-20', 24, true), ('Rabies', '2027-04-25', 24, true), ('DHPP', '2026-12-20', 24, false),
 -- Dog 25 Jasper
-('Bordetella', '2026-10-15', 25), ('Rabies', '2027-05-30', 25), ('DHPP', '2027-01-15', 25),
+('Bordetella', '2026-10-15', 25, true), ('Rabies', '2027-05-30', 25, true), ('DHPP', '2027-01-15', 25, false),
 -- Dog 26 Ruby
-('Bordetella', '2026-06-10', 26), ('Rabies', '2027-01-05', 26), ('DHPP', '2026-09-10', 26),
+('Bordetella', '2026-06-10', 26, true), ('Rabies', '2027-01-05', 26, true), ('DHPP', '2026-09-10', 26, false),
 -- Dog 27 Hunter
-('Bordetella', '2026-11-20', 27), ('Rabies', '2027-06-10', 27), ('DHPP', '2027-02-20', 27),
+('Bordetella', '2026-11-20', 27, true), ('Rabies', '2027-06-10', 27, true), ('DHPP', '2027-02-20', 27, false),
 -- Dog 28 Pepper
-('Bordetella', '2026-07-25', 28), ('Rabies', '2027-02-20', 28), ('DHPP', '2026-10-25', 28),
+('Bordetella', '2026-07-25', 28, true), ('Rabies', '2027-02-20', 28, true), ('DHPP', '2026-10-25', 28, false),
 -- Dog 29 Ace
-('Bordetella', '2026-12-15', 29), ('Rabies', '2027-07-20', 29), ('DHPP', '2027-03-15', 29),
+('Bordetella', '2026-12-15', 29, true), ('Rabies', '2027-07-20', 29, true), ('DHPP', '2027-03-15', 29, false),
 -- Dog 30 Willow
-('Bordetella', '2026-04-05', 30), ('Rabies', '2026-11-01', 30), ('DHPP', '2026-07-05', 30);
+('Bordetella', '2026-04-05', 30, true), ('Rabies', '2026-11-01', 30, true), ('DHPP', '2026-07-05', 30, false);
 
 -- Alerts (2 per dog)
 INSERT INTO alerts (alert, dog_id) VALUES
@@ -234,8 +220,7 @@ INSERT INTO notes (note, dog_id) VALUES
 ('Willow is a senior dog who prefers calm, quiet environments.', 30);
 
 -- Likes (2 per dog)
--- NOTE: "like" is a reserved SQL keyword — quoted here for H2 compatibility
-INSERT INTO likes ("like", dog_id) VALUES
+INSERT INTO likes (like_text, dog_id) VALUES
 ('Playing fetch', 1),              ('Swimming', 1),
 ('Tug of war', 2),                 ('Long hikes', 2),
 ('Running in open fields', 3),     ('Belly rubs', 3),
@@ -268,10 +253,20 @@ INSERT INTO likes ("like", dog_id) VALUES
 ('Sunbathing on the porch', 30),   ('Slow leisurely walks', 30);
 
 -- Locations (4 per organization: 1-4 = Org 1, 5-8 = Org 2, 9-12 = Org 3)
-INSERT INTO locations (name, org_id) VALUES
-('Boarding Room',  1), ('Training Field', 1), ('Play Area', 1), ('Off Location', 1),
-('Boarding Room',  2), ('Training Field', 2), ('Play Area', 2), ('Off Location', 2),
-('Boarding Room',  3), ('Training Field', 3), ('Play Area', 3), ('Off Location', 3);
+-- offsite=false for on-premises rooms/fields; offsite=true for off-location entries
+INSERT INTO locations (location_name, org_id, address, offsite) VALUES
+('Boarding Room',  1, '101 Pawsome Lane, Springfield, IL 62701',        false),
+('Training Field', 1, '101 Pawsome Lane, Springfield, IL 62701',        false),
+('Play Area',      1, '101 Pawsome Lane, Springfield, IL 62701',        false),
+('Off Location',   1, '101 Pawsome Lane, Springfield, IL 62701',        true),
+('Boarding Room',  2, '55 Happy Tails Blvd, Austin, TX 73301',          false),
+('Training Field', 2, '55 Happy Tails Blvd, Austin, TX 73301',          false),
+('Play Area',      2, '55 Happy Tails Blvd, Austin, TX 73301',          false),
+('Off Location',   2, '55 Happy Tails Blvd, Austin, TX 73301',          true),
+('Boarding Room',  3, '200 Best Friends Rd, Portland, OR 97201',        false),
+('Training Field', 3, '200 Best Friends Rd, Portland, OR 97201',        false),
+('Play Area',      3, '200 Best Friends Rd, Portland, OR 97201',        false),
+('Off Location',   3, '200 Best Friends Rd, Portland, OR 97201',        true);
 
 -- Events (15 total, all within Mon Apr 6 – Sun Apr 12, 2026)
 -- Dog 1 (Buddy) has 3 events; User 1 (Tom Baker) has 3 events — all overlapping.

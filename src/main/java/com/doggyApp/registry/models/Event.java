@@ -28,6 +28,11 @@ public class Event {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    // Not persisted — only used during event creation/update when location is offsite.
+    // The address is stored on the new Location row created for that offsite event.
+    @Transient
+    private String offsiteAddress;
+
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
@@ -63,6 +68,7 @@ public class Event {
     public int getId()                  { return id; }
     public String getEvent()            { return event; }
     public String getDescription()      { return description; }
+    public String getOffsiteAddress()    { return offsiteAddress; }
     public Integer getLocationId()       { return locationId; }
     public Location getLocation()        { return location; }
     public LocalDateTime getStartTime() { return startTime; }
@@ -73,6 +79,7 @@ public class Event {
 
     public void setEvent(String event)             { this.event = event; }
     public void setDescription(String description) { this.description = description; }
+    public void setOffsiteAddress(String a)        { this.offsiteAddress = a; }
     public void setLocation(Location location)     { this.location = location; }
     public void setStartTime(LocalDateTime t)      { this.startTime = t; }
     public void setEndTime(LocalDateTime t)        { this.endTime = t; }

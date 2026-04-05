@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/registry")
-@CrossOrigin
 public class LoginController {
 
     @GetMapping("/test")

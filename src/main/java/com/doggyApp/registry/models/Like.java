@@ -12,7 +12,7 @@ public class Like {
     @Column(name = "like_id")
     private int id;
 
-    @Column(name = "like")
+    @Column(name = "like_text")
     private String like;
 
     @JsonIgnore
