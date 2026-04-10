@@ -1,9 +1,11 @@
 package com.doggyApp.registry.service;
 
 import com.doggyApp.registry.models.Location;
+import com.doggyApp.registry.repo.EventRepo;
 import com.doggyApp.registry.repo.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +14,9 @@ public class LocationService {
 
     @Autowired
     private LocationRepo locationRepo;
+
+    @Autowired
+    private EventRepo eventRepo;
 
     public List<Location> getByOrganization(int orgId) {
         return locationRepo.findByOrgId(orgId);
@@ -25,12 +30,14 @@ public class LocationService {
         return locationRepo.save(location);
     }
 
+    @Transactional
     public void delete(int locationId, int orgId) {
         Location location = locationRepo.findByIdAndOrgId(locationId, orgId)
                 .orElseThrow(() -> new RuntimeException("Location not found"));
         if (location.isOffsite()) {
             throw new RuntimeException("The offsite location cannot be deleted");
         }
+        eventRepo.clearLocation(locationId);
         locationRepo.delete(location);
     }
 }

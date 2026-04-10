@@ -268,27 +268,162 @@ INSERT INTO locations (location_name, org_id, address, offsite) VALUES
 ('Play Area',      3, '200 Best Friends Rd, Portland, OR 97201',        false),
 ('Off Location',   3, '200 Best Friends Rd, Portland, OR 97201',        true);
 
--- Events (15 total, all within Mon Apr 6 – Sun Apr 12, 2026)
--- Dog 1 (Buddy) has 3 events; User 1 (Tom Baker) has 3 events — all overlapping.
--- FK columns: users_user_id, dogs_dog_id (JPA default naming)
+-- Events (45 total: 15 per org, all Apr 13–19 2026)
 -- Location IDs: Org1→ 1=Boarding Room, 2=Training Field, 3=Play Area, 4=Off Location
 --               Org2→ 5=Boarding Room, 6=Training Field, 7=Play Area, 8=Off Location
 --               Org3→ 9=Boarding Room, 10=Training Field, 11=Play Area, 12=Off Location
-INSERT INTO events (event, description, location_id, start_time, end_time, users_user_id, dogs_dog_id) VALUES
--- Dog 1 / User 1 (Org 1) — 3 events
-('Vet Appointment',  'Annual wellness exam for Buddy',         4,  '2026-04-06 09:00:00', '2026-04-06 10:00:00',  1,  1),
-('Grooming Session', 'Full groom and nail trim for Buddy',     1,  '2026-04-08 14:00:00', '2026-04-08 15:30:00',  1,  1),
-('Training Class',   'Basic obedience refresher for Buddy',   2,  '2026-04-10 11:00:00', '2026-04-10 12:00:00',  1,  1),
--- Remaining 12 events spread across other users and dogs
-('Vet Appointment',  'Dental check for Luna',                  4,  '2026-04-06 10:30:00', '2026-04-06 11:30:00',  2,  3),
-('Playdate',         'Off-leash play session for Daisy',       3,  '2026-04-07 09:00:00', '2026-04-07 10:00:00',  3,  5),
-('Grooming Session', 'Dental cleaning for Cooper',             1,  '2026-04-07 14:00:00', '2026-04-07 15:00:00',  4,  8),
-('Playdate',         'Dog park outing for Molly',              3,  '2026-04-08 10:00:00', '2026-04-08 11:00:00',  5,  9),
-('Training Class',   'Agility training for Sadie',             6,  '2026-04-08 16:00:00', '2026-04-08 17:00:00',  6, 12),
-('Vaccine Booster',  'Bordetella booster for Duke',            5,  '2026-04-09 09:30:00', '2026-04-09 10:00:00',  7, 11),
-('Vet Appointment',  'Eye drop check-up for Zeus',             8,  '2026-04-09 13:00:00', '2026-04-09 14:00:00',  8, 15),
-('Grooming Session', 'Ear cleaning for Bruno',                 5,  '2026-04-09 16:00:00', '2026-04-09 17:00:00',  9, 17),
-('Training Class',   'Scent work session for Jasper',          6,  '2026-04-10 13:00:00', '2026-04-10 14:00:00', 10, 25),
-('Vet Appointment',  'Cardiac check for Zoe',                  12, '2026-04-10 15:00:00', '2026-04-10 16:00:00', 11, 24),
-('Playdate',         'Socialization session for Chloe',        11, '2026-04-11 10:00:00', '2026-04-11 11:00:00', 12, 14),
-('Training Class',   'Senior wellness check for Willow',       10, '2026-04-12 11:00:00', '2026-04-12 12:30:00', 13, 30);
+-- Users:  Org1→ 1=Tom, 2=Sara, 3=Mike, 4=Lisa, 5=Jake
+--         Org2→ 6=Amy, 7=Ben, 8=Cara, 9=Dan, 10=Eve
+--         Org3→ 11=Fred, 12=Gina, 13=Hank, 14=Iris, 15=Joel
+-- Dogs:   Org1→ 1-10, Org2→ 11-20, Org3→ 21-30
+INSERT INTO events (event, description, location_id, start_time, end_time, creator_user_id) VALUES
+-- ORG 1 (events 1–15)
+('Play Group',       'Sunday morning off-leash play group',              3, '2026-04-13 10:00:00', '2026-04-13 11:30:00', 1),  -- id=1
+('Training Class',   'Basic obedience for small group',                  2, '2026-04-13 14:00:00', '2026-04-13 15:00:00', 2),  -- id=2
+('Vet Appointment',  'Annual wellness check — off-site clinic',          4, '2026-04-14 09:00:00', '2026-04-14 10:00:00', 1),  -- id=3
+('Grooming Session', 'Full groom and nail trim session',                 1, '2026-04-14 13:00:00', '2026-04-14 14:30:00', 3),  -- id=4
+('Obedience Class',  'Intermediate commands group class',                2, '2026-04-14 16:00:00', '2026-04-14 17:00:00', 4),  -- id=5
+('Agility Training', 'Jumps and weave poles circuit',                    2, '2026-04-15 09:00:00', '2026-04-15 10:30:00', 2),  -- id=6
+('Socialization',    'Controlled meet-and-greet session',                3, '2026-04-15 14:00:00', '2026-04-15 15:00:00', 5),  -- id=7
+('Play Group',       'Wednesday afternoon group play',                   3, '2026-04-16 10:00:00', '2026-04-16 11:30:00', 1),  -- id=8
+('Vaccine Booster',  'Bordetella and rabies boosters',                   1, '2026-04-16 13:00:00', '2026-04-16 14:00:00', 2),  -- id=9
+('Training Class',   'Recall and leash manners',                         2, '2026-04-17 09:00:00', '2026-04-17 10:00:00', 3),  -- id=10
+('Grooming Session', 'Brush-out and ear cleaning',                       1, '2026-04-17 14:00:00', '2026-04-17 15:30:00', 4),  -- id=11
+('Play Group',       'Friday fun play group — large dogs',               3, '2026-04-18 10:00:00', '2026-04-18 12:00:00', 1),  -- id=12
+('Vet Appointment',  'Post-surgery follow-up — off-site',                4, '2026-04-18 13:00:00', '2026-04-18 14:00:00', 5),  -- id=13
+('Obedience Class',  'Advanced off-leash reliability',                   2, '2026-04-19 10:00:00', '2026-04-19 11:00:00', 2),  -- id=14
+('Socialization',    'Saturday puppy socialization hour',                 3, '2026-04-19 14:00:00', '2026-04-19 15:30:00', 1),  -- id=15
+-- ORG 2 (events 16–30)
+('Play Group',       'Sunday morning off-leash social',                  7, '2026-04-13 09:00:00', '2026-04-13 10:30:00', 6),  -- id=16
+('Training Class',   'Nose work foundation class',                       6, '2026-04-13 13:00:00', '2026-04-13 14:00:00', 7),  -- id=17
+('Vet Appointment',  'Eye and dental check — off-site',                  8, '2026-04-14 10:00:00', '2026-04-14 11:00:00', 8),  -- id=18
+('Grooming Session', 'De-shed treatment and nail grind',                 5, '2026-04-14 14:00:00', '2026-04-14 15:30:00', 6),  -- id=19
+('Agility Training', 'Tunnels and A-frame introduction',                 6, '2026-04-15 09:00:00', '2026-04-15 10:00:00', 9),  -- id=20
+('Obedience Class',  'Stay and place command drills',                    6, '2026-04-15 14:00:00', '2026-04-15 15:00:00', 7),  -- id=21
+('Play Group',       'Wednesday large-dog play session',                 7, '2026-04-16 10:00:00', '2026-04-16 11:30:00', 6),  -- id=22
+('Vaccine Booster',  'DHPP and leptospirosis boosters',                  5, '2026-04-16 13:00:00', '2026-04-16 14:00:00', 9),  -- id=23
+('Socialization',    'Calm dog introductions with new arrivals',         7, '2026-04-17 09:00:00', '2026-04-17 10:00:00', 10), -- id=24
+('Training Class',   'Impulse control and focus work',                   6, '2026-04-17 14:00:00', '2026-04-17 15:00:00', 7),  -- id=25
+('Grooming Session', 'Puppy first groom — coat trim and bath',           5, '2026-04-18 09:00:00', '2026-04-18 10:30:00', 8),  -- id=26
+('Play Group',       'Friday afternoon social — small breeds',           7, '2026-04-18 14:00:00', '2026-04-18 15:30:00', 6),  -- id=27
+('Vet Appointment',  'Cardiac and ortho check — off-site',               8, '2026-04-19 10:00:00', '2026-04-19 11:00:00', 9),  -- id=28
+('Obedience Class',  'Distraction proofing in open field',               6, '2026-04-19 13:00:00', '2026-04-19 14:00:00', 10), -- id=29
+('Agility Training', 'Full agility course run-through',                  6, '2026-04-19 15:00:00', '2026-04-19 16:00:00', 7),  -- id=30
+-- ORG 3 (events 31–45)
+('Play Group',       'Sunday off-leash group — mixed sizes',             11, '2026-04-13 10:00:00', '2026-04-13 11:30:00', 11), -- id=31
+('Training Class',   'Scent detection foundation',                       10, '2026-04-13 14:00:00', '2026-04-13 15:00:00', 12), -- id=32
+('Vet Appointment',  'Neuro and spine check — off-site',                 12, '2026-04-14 09:00:00', '2026-04-14 10:00:00', 13), -- id=33
+('Grooming Session', 'Full groom, deshed, and teeth brush',               9, '2026-04-14 13:00:00', '2026-04-14 14:30:00', 11), -- id=34
+('Obedience Class',  'Heel and loose-leash walking clinic',              10, '2026-04-14 16:00:00', '2026-04-14 17:00:00', 14), -- id=35
+('Agility Training', 'Contact obstacle focus session',                   10, '2026-04-15 09:00:00', '2026-04-15 10:30:00', 12), -- id=36
+('Socialization',    'Senior dog calm socialization walk',               11, '2026-04-15 14:00:00', '2026-04-15 15:00:00', 15), -- id=37
+('Play Group',       'Wednesday morning group romp',                     11, '2026-04-16 10:00:00', '2026-04-16 11:30:00', 11), -- id=38
+('Vaccine Booster',  'Bordetella, rabies, and DHPP refresh',              9, '2026-04-16 13:00:00', '2026-04-16 14:00:00', 12), -- id=39
+('Training Class',   'Advanced recall under distraction',                10, '2026-04-17 09:00:00', '2026-04-17 10:00:00', 13), -- id=40
+('Grooming Session', 'Seasonal coat prep — blow-dry and trim',            9, '2026-04-17 14:00:00', '2026-04-17 15:30:00', 14), -- id=41
+('Play Group',       'Friday big-dog play group',                        11, '2026-04-18 10:00:00', '2026-04-18 12:00:00', 11), -- id=42
+('Vet Appointment',  'Weight and joint management check — off-site',     12, '2026-04-18 13:00:00', '2026-04-18 14:00:00', 15), -- id=43
+('Obedience Class',  'Competition prep — heel pattern and stays',        10, '2026-04-19 10:00:00', '2026-04-19 11:00:00', 12), -- id=44
+('Socialization',    'Saturday gentle introductions for shy dogs',       11, '2026-04-19 14:00:00', '2026-04-19 15:30:00', 11); -- id=45
+
+-- Event attendees (1–3 users per event, all within the same org)
+INSERT INTO event_attendees (event_id, user_id) VALUES
+-- Org 1 events
+(1,  1), (1,  2), (1,  3),
+(2,  2), (2,  4),
+(3,  1),
+(4,  3), (4,  5),
+(5,  4),
+(6,  1), (6,  2),
+(7,  5),
+(8,  1), (8,  3), (8,  5),
+(9,  2), (9,  4),
+(10, 3),
+(11, 4), (11, 5),
+(12, 1), (12, 2),
+(13, 5),
+(14, 2), (14, 3), (14, 4),
+(15, 1), (15, 5),
+-- Org 2 events
+(16, 6), (16, 7), (16, 8),
+(17, 7), (17, 9),
+(18, 8),
+(19, 6), (19, 10),
+(20, 9),
+(21, 7), (21, 8),
+(22, 6), (22, 8), (22, 10),
+(23, 9),
+(24, 10),
+(25, 7), (25, 9),
+(26, 8), (26, 10),
+(27, 6), (27, 7),
+(28, 9),
+(29, 10),
+(30, 7), (30, 8), (30, 9),
+-- Org 3 events
+(31, 11), (31, 12), (31, 13),
+(32, 12), (32, 14),
+(33, 13),
+(34, 11), (34, 15),
+(35, 14),
+(36, 12), (36, 13),
+(37, 15),
+(38, 11), (38, 13), (38, 15),
+(39, 12), (39, 14),
+(40, 13),
+(41, 14), (41, 15),
+(42, 11), (42, 12),
+(43, 15),
+(44, 12), (44, 13), (44, 14),
+(45, 11), (45, 15);
+
+-- Event dogs (1–5 dogs per event, all within the same org)
+INSERT INTO event_dogs (event_id, dog_id) VALUES
+-- Org 1 events (dogs 1–10)
+(1,  1), (1,  3), (1,  5), (1,  7), (1,  9),
+(2,  2), (2,  6),
+(3,  1),
+(4,  4), (4,  8), (4, 10),
+(5,  5), (5,  7),
+(6,  3), (6,  6), (6,  9),
+(7,  2), (7,  4),
+(8,  1), (8,  5), (8,  8), (8, 10),
+(9,  3), (9,  7),
+(10, 6), (10, 9),
+(11, 2), (11, 4), (11, 8),
+(12, 1), (12, 3), (12, 5), (12, 7), (12, 9),
+(13, 10),
+(14, 2), (14, 6), (14, 8),
+(15, 1), (15, 4), (15, 7),
+-- Org 2 events (dogs 11–20)
+(16, 11), (16, 13), (16, 15), (16, 17), (16, 19),
+(17, 12), (17, 16),
+(18, 14),
+(19, 11), (19, 18), (19, 20),
+(20, 12), (20, 15),
+(21, 16), (21, 18),
+(22, 13), (22, 17), (22, 19), (22, 20),
+(23, 11), (23, 14),
+(24, 15), (24, 20),
+(25, 12), (25, 16), (25, 18),
+(26, 13), (26, 17),
+(27, 11), (27, 15), (27, 19),
+(28, 14),
+(29, 16), (29, 20),
+(30, 12), (30, 15), (30, 18),
+-- Org 3 events (dogs 21–30)
+(31, 21), (31, 23), (31, 25), (31, 27), (31, 29),
+(32, 22), (32, 26),
+(33, 24),
+(34, 21), (34, 28), (34, 30),
+(35, 25), (35, 27),
+(36, 23), (36, 26), (36, 29),
+(37, 22), (37, 24),
+(38, 21), (38, 25), (38, 28), (38, 30),
+(39, 23), (39, 27),
+(40, 26), (40, 29),
+(41, 22), (41, 24), (41, 28),
+(42, 21), (42, 23), (42, 25), (42, 27), (42, 29),
+(43, 30),
+(44, 22), (44, 26), (44, 28),
+(45, 21), (45, 24), (45, 27);

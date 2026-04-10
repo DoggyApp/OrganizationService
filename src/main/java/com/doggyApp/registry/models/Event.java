@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -39,22 +41,23 @@ public class Event {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    // All users attending this event
+    @ManyToMany
+    @JoinTable(
+        name = "event_attendees",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> attendees = new ArrayList<>();
 
-
-    // FK projections — lets Angular know which user/dog without triggering lazy load
-    @Column(name = "users_user_id", insertable = false, updatable = false)
-    private Integer userId;
-
-    @Column(name = "dogs_dog_id", insertable = false, updatable = false)
-    private Integer dogId;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User users;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Dog dogs;
+    // All dogs attending this event
+    @ManyToMany
+    @JoinTable(
+        name = "event_dogs",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "dog_id")
+    )
+    private List<Dog> dogs = new ArrayList<>();
 
     // Tracks who originally created the event — used for edit authorization
     @Column(name = "creator_user_id", insertable = false, updatable = false)
@@ -65,17 +68,17 @@ public class Event {
     @JoinColumn(name = "creator_user_id")
     private User creator;
 
-    public int getId()                  { return id; }
-    public String getEvent()            { return event; }
-    public String getDescription()      { return description; }
+    public int getId()                   { return id; }
+    public String getEvent()             { return event; }
+    public String getDescription()       { return description; }
     public String getOffsiteAddress()    { return offsiteAddress; }
     public Integer getLocationId()       { return locationId; }
     public Location getLocation()        { return location; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public LocalDateTime getEndTime()   { return endTime; }
-    public Integer getUserId()          { return userId; }
-    public Integer getCreatorId()       { return creatorId; }
-    public Integer getDogId()           { return dogId; }
+    public LocalDateTime getStartTime()  { return startTime; }
+    public LocalDateTime getEndTime()    { return endTime; }
+    public List<User> getAttendees()     { return attendees; }
+    public List<Dog> getDogs()           { return dogs; }
+    public Integer getCreatorId()        { return creatorId; }
 
     public void setEvent(String event)             { this.event = event; }
     public void setDescription(String description) { this.description = description; }
@@ -83,7 +86,7 @@ public class Event {
     public void setLocation(Location location)     { this.location = location; }
     public void setStartTime(LocalDateTime t)      { this.startTime = t; }
     public void setEndTime(LocalDateTime t)        { this.endTime = t; }
-    public void setUsers(User user)                { this.users = user; }
-    public void setDogs(Dog dog)                   { this.dogs = dog; }
+    public void setAttendees(List<User> attendees) { this.attendees = attendees; }
+    public void setDogs(List<Dog> dogs)            { this.dogs = dogs; }
     public void setCreator(User creator)           { this.creator = creator; }
 }

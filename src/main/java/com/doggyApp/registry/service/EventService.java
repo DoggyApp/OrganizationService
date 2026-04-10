@@ -30,11 +30,11 @@ public class EventService {
 
     // For employees — only their own events
     public List<Event> getByUser(int userId) {
-        return eventRepo.findByUsers_Id(userId);
+        return eventRepo.findByAttendees_Id(userId);
     }
 
     public List<Event> getByUserAndOrganization(int userId, int orgId) {
-        return eventRepo.findByUsers_IdAndUsers_OrganizationId(userId, orgId);
+        return eventRepo.findByAttendees_IdAndAttendees_OrganizationId(userId, orgId);
     }
 
     public List<Event> getByDogAndOrganization(int dogId, int orgId) {
@@ -75,25 +75,29 @@ public class EventService {
 
     // User adds themselves to an existing event in their org.
     public Event assignUser(int eventId, int userId, int orgId) {
-        Event event = eventRepo.findByIdAndUsers_OrganizationId(eventId, orgId)
+        Event event = eventRepo.findByIdAndCreator_OrganizationId(eventId, orgId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        event.setUsers(user);
+        if (!event.getAttendees().contains(user)) {
+            event.getAttendees().add(user);
+        }
         return eventRepo.save(event);
     }
 
     // User adds a dog to an existing event — dog must belong to the same org.
     public Event assignDog(int eventId, int dogId, int orgId) {
-        Event event = eventRepo.findByIdAndUsers_OrganizationId(eventId, orgId)
+        Event event = eventRepo.findByIdAndCreator_OrganizationId(eventId, orgId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         Dog dog = dogRepo.findByIdAndOrganizationId(dogId, orgId)
                 .orElseThrow(() -> new RuntimeException("Dog not found"));
 
-        event.setDogs(dog);
+        if (!event.getDogs().contains(dog)) {
+            event.getDogs().add(dog);
+        }
         return eventRepo.save(event);
     }
 
@@ -114,7 +118,7 @@ public class EventService {
         }
         event.setLocation(resolveLocation(event.getLocation().getId(), event.getOffsiteAddress(), orgId));
 
-        event.setUsers(user);
+        event.getAttendees().add(user);
         return eventRepo.save(event);
     }
 

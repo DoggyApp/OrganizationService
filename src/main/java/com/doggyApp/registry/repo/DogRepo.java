@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface DogRepo extends JpaRepository<Dog, Integer> {
     List<Dog> findByOrganizationId(int organizationId);
     Optional<Dog> findByIdAndOrganizationId(int dogId, int organizationId);
+    List<Dog> findByOwner_IdAndOrganization_Id(int ownerId, int orgId);
 }

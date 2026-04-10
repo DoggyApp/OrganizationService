@@ -11,24 +11,21 @@ import java.util.List;
 import java.util.Optional;
 public interface EventRepo extends JpaRepository<Event, Integer> {
 
-    // Events belonging to a specific user (employee view)
-    List<Event> findByUsers_Id(int userId);
+    // Events where this user is an attendee (employee view)
+    List<Event> findByAttendees_Id(int userId);
 
-    // Events for a specific user, scoped to an org
-    List<Event> findByUsers_IdAndUsers_OrganizationId(int userId, int orgId);
+    // Events where this user is an attendee, scoped to an org
+    List<Event> findByAttendees_IdAndAttendees_OrganizationId(int userId, int orgId);
 
     // Events for a specific dog, scoped to an org
     List<Event> findByDogs_IdAndDogs_Organization_Id(int dogId, int orgId);
 
-    // All events in an organization, traversing user → organization (org admin view)
-    @Query("SELECT e FROM Event e WHERE e.users.organization.id = :orgId")
+    // All events in an organization, scoped through the creator (org admin view)
+    @Query("SELECT DISTINCT e FROM Event e WHERE e.creator.organizationId = :orgId")
     List<Event> findByOrganizationId(@Param("orgId") int orgId);
 
-    // Single event scoped to an org — used before allowing user/dog assignment or org edits
-    Optional<Event> findByIdAndUsers_OrganizationId(int id, int orgId);
-
-    // Single event scoped to a specific user — used before allowing the creator to edit
-    Optional<Event> findByIdAndUsers_Id(int id, int userId);
+    // Single event scoped to an org via the creator — used before allowing assignment or edits
+    Optional<Event> findByIdAndCreator_OrganizationId(int id, int orgId);
 
     // Edit authorization — only matches if this user is the original creator
     Optional<Event> findByIdAndCreator_Id(int id, int creatorId);
@@ -39,8 +36,13 @@ public interface EventRepo extends JpaRepository<Event, Integer> {
     // All events at a specific location, scoped to the requesting org
     List<Event> findByLocation_IdAndLocation_OrgId(int locationId, int orgId);
 
-    // Cascade delete — nullifies the assigned-user field on events where this user was the assignee but not the creator
+    // Removes a user from all event attendee lists (called before deleting the user)
     @Modifying
-    @Query("UPDATE Event e SET e.users = null WHERE e.users.id = :userId")
+    @Query(value = "DELETE FROM event_attendees WHERE user_id = :userId", nativeQuery = true)
     void clearAssignedUser(@Param("userId") int userId);
+
+    // Nullify location on events before a location is deleted
+    @Modifying
+    @Query("UPDATE Event e SET e.location = null WHERE e.location.id = :locationId")
+    void clearLocation(@Param("locationId") int locationId);
 }
