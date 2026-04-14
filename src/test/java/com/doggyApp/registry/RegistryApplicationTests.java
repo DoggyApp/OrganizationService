@@ -1,4 +1,4 @@
-package com.doggyApp.registry;
+package com.example.OrganizationService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
