@@ -47,6 +47,12 @@ public class Owner {
     @Column(name = "birthday")
     private LocalDate birthday;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     @PrePersist
     @PreUpdate
     public void normalizePhone() {
@@ -58,7 +64,7 @@ public class Owner {
         }
     }
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"owner"})
     private List<Dog> dogs = new ArrayList<>();
 
@@ -89,6 +95,8 @@ public class Owner {
     public String getPhoneNumber()              { return phoneNumber; }
     public String getAddress()                  { return address; }
     public LocalDate getBirthday()              { return birthday; }
+    public Double getLatitude()                 { return latitude; }
+    public Double getLongitude()                { return longitude; }
     public List<Dog> getDogs()                  { return dogs; }
     public List<Owner> getFriends()             { return friends; }
     public List<Organization> getFavoriteOrganizations() { return favoriteOrganizations; }
@@ -100,5 +108,7 @@ public class Owner {
     public void setPassword(String password)                { this.password = password; }
     public void setPhoneNumber(String phoneNumber)          { this.phoneNumber = phoneNumber; }
     public void setAddress(String address)                  { this.address = address; }
-    public void setBirthday(LocalDate birthday)             { this.birthday = birthday; }
+    public void setBirthday(LocalDate birthday)   { this.birthday = birthday; }
+    public void setLatitude(Double latitude)      { this.latitude = latitude; }
+    public void setLongitude(Double longitude)    { this.longitude = longitude; }
 }

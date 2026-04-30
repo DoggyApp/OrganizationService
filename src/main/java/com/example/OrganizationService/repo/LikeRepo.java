@@ -11,6 +11,5 @@ import java.util.Optional;
 @Repository
 public interface LikeRepo extends JpaRepository<Like, Integer> {
 
-    @Query("SELECT l FROM Like l WHERE l.id = :id AND l.dog.organization.id = :orgId")
-    Optional<Like> findByIdAndOrganizationId(@Param("id") int id, @Param("orgId") int orgId);
+
 }

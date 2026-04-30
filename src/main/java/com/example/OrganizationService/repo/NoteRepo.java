@@ -11,6 +11,4 @@ import java.util.Optional;
 @Repository
 public interface NoteRepo extends JpaRepository<Note, Integer> {
 
-    @Query("SELECT n FROM Note n WHERE n.id = :id AND n.dog.organization.id = :orgId")
-    Optional<Note> findByIdAndOrganizationId(@Param("id") int id, @Param("orgId") int orgId);
 }

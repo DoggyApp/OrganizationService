@@ -1,4 +1,4 @@
-package com.example.OrganizationService.contoller;
+package com.example.OrganizationService.controller;
 
 import com.example.OrganizationService.models.Organization;
 import com.example.OrganizationService.service.LocationService;
@@ -38,7 +38,7 @@ public class LocationController {
         if (address == null || address.isBlank()) return ResponseEntity.status(400).body("address is required");
         Double latitude  = parseOptionalDouble(body.get("latitude"));
         Double longitude = parseOptionalDouble(body.get("longitude"));
-        return ResponseEntity.status(201).body(locationService.add(name, address, org.getId(), latitude, longitude));
+        return ResponseEntity.status(201).body(locationService.add(name, address, org, latitude, longitude));
     }
 
     // DELETE /organization/location/{id}

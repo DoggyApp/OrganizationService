@@ -1,4 +1,4 @@
-package com.example.OrganizationService.contoller;
+package com.example.OrganizationService.controller;
 
 import com.example.OrganizationService.models.Organization;
 import com.example.OrganizationService.models.User;

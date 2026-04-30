@@ -41,13 +41,22 @@ public class Organization {
     @Column(name = "subscription_expiration")
     private LocalDate subscriptionExpiration;
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"organization", "password"})
     private List<User> employees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"organization", "alerts", "likes", "notes", "vaccines"})
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "organization_dogs",
+        joinColumns = @JoinColumn(name = "organization_id"),
+        inverseJoinColumns = @JoinColumn(name = "dog_id")
+    )
+    @JsonIgnoreProperties({"organizations", "alerts", "likes", "notes", "vaccines", "owner"})
     private List<Dog> dogs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("organization")
+    private List<Location> locations = new ArrayList<>();
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Service> services = new ArrayList<>();
@@ -64,6 +73,7 @@ public class Organization {
     public LocalDate getSubscriptionExpiration(){ return subscriptionExpiration; }
     public List<User> getEmployees()            { return employees; }
     public List<Dog> getDogs()                  { return dogs; }
+    public List<Location> getLocations()        { return locations; }
     public List<Service> getServices()          { return services; }
     public List<Review> getReviews()            { return reviews; }
 
@@ -73,4 +83,5 @@ public class Organization {
     public void setTitle(String title)                      { this.title = title; }
     public void setSubscriptionStart(LocalDate date)        { this.subscriptionStart = date; }
     public void setSubscriptionExpiration(LocalDate date)   { this.subscriptionExpiration = date; }
+    public void setDogs(List<Dog> dogs)                     { this.dogs = dogs; }
 }

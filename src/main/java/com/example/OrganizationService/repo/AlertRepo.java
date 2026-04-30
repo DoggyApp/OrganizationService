@@ -11,6 +11,5 @@ import java.util.Optional;
 @Repository
 public interface AlertRepo extends JpaRepository<Alert, Integer> {
 
-    @Query("SELECT a FROM Alert a WHERE a.id = :id AND a.dog.organization.id = :orgId")
-    Optional<Alert> findByIdAndOrganizationId(@Param("id") int id, @Param("orgId") int orgId);
+
 }
