@@ -20,7 +20,7 @@ public class LocationService {
     private EventRepo eventRepo;
 
     public List<Location> getByOrganization(int orgId) {
-        return locationRepo.findByOrgId(orgId);
+        return locationRepo.findByOrganizationId(orgId);
     }
 
     public Location add(String name, String address, Organization org, Double latitude, Double longitude) {
@@ -35,7 +35,7 @@ public class LocationService {
 
     @Transactional
     public void delete(int locationId, int orgId) {
-        Location location = locationRepo.findByIdAndOrgId(locationId, orgId)
+        Location location = locationRepo.findByIdAndOrganizationId(locationId, orgId)
                 .orElseThrow(() -> new RuntimeException("Location not found"));
         eventRepo.clearLocation(locationId);
         locationRepo.delete(location);

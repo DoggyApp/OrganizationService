@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface LocationRepo extends JpaRepository<Location, Integer> {
 
-    List<Location> findByOrgId(int orgId);
+    List<Location> findByOrganizationId(int orgId);
 
-    Optional<Location> findByIdAndOrgId(int id, int orgId);
+    Optional<Location> findByIdAndOrganizationId(int id, int orgId);
 }

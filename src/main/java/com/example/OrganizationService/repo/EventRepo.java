@@ -18,7 +18,7 @@ public interface EventRepo extends JpaRepository<Event, Integer> {
     List<Event> findByAttendees_IdAndAttendees_OrganizationId(int userId, int orgId);
 
     // Events for a specific dog, scoped to an org
-    List<Event> findByDogs_IdAndDogs_Organization_Id(int dogId, int orgId);
+    List<Event> findByDogs_IdAndDogs_Organizations_Id(int dogId, int orgId);
 
     // All events in an organization, scoped through the creator (org admin view)
     @Query("SELECT DISTINCT e FROM Event e WHERE e.creator.organizationId = :orgId")
@@ -34,15 +34,15 @@ public interface EventRepo extends JpaRepository<Event, Integer> {
     void deleteByCreator_Id(int creatorId);
 
     // All events at a specific location, scoped to the requesting org
-    List<Event> findByLocation_IdAndLocation_OrgId(int locationId, int orgId);
+    List<Event> findByRoom_Location_IdAndRoom_Location_Organization_Id(int locationId, int orgId);
 
     // Removes a user from all event attendee lists (called before deleting the user)
     @Modifying
     @Query(value = "DELETE FROM event_attendees WHERE user_id = :userId", nativeQuery = true)
     void clearAssignedUser(@Param("userId") int userId);
 
-    // Nullify location on events before a location is deleted
+    // Nullify room on events whose room is at the given location (called before deleting the location)
     @Modifying
-    @Query("UPDATE Event e SET e.location = null WHERE e.location.id = :locationId")
+    @Query("UPDATE Event e SET e.room = null WHERE e.room.location.id = :locationId")
     void clearLocation(@Param("locationId") int locationId);
 }

@@ -33,7 +33,7 @@ public class EventService {
     }
 
     public List<Event> getByDogAndOrganization(int dogId, int orgId) {
-        return eventRepo.findByDogs_IdAndDogs_Organization_Id(dogId, orgId);
+        return eventRepo.findByDogs_IdAndDogs_Organizations_Id(dogId, orgId);
     }
 
     // For org admins — every event across the organization
@@ -43,6 +43,6 @@ public class EventService {
 
     // Returns all events at a specific location, scoped to the requesting org
     public List<Event> getByLocation(int locationId, int orgId) {
-        return eventRepo.findByLocation_IdAndLocation_OrgId(locationId, orgId);
+        return eventRepo.findByRoom_Location_IdAndRoom_Location_Organization_Id(locationId, orgId);
     }
 }
