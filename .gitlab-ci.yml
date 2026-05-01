@@ -1,0 +1,62 @@
+stages:
+  - test
+  - build-and-push
+  - deploy
+
+variables:
+  SERVICE_NAME: org-service
+  IMAGE_NAME: $ECR_REGISTRY/doggyapp/$SERVICE_NAME
+  DOCKER_TAG: $CI_COMMIT_SHORT_SHA
+  DEPLOYMENT_NAME: $SERVICE_NAME
+  CONTAINER_NAME: $SERVICE_NAME
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+test:
+  stage: test
+  image: gradle:8-jdk21
+  tags:
+    - k8s
+  cache:
+    key: "$CI_PROJECT_NAME-gradle"
+    paths:
+      - .gradle/
+  script:
+    - gradle test
+  artifacts:
+    reports:
+      junit: build/test-results/test/*.xml
+    paths:
+      - build/reports/tests/
+    expire_in: 1 week
+  rules:
+    - when: always
+
+build-and-push:
+  stage: build-and-push
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.0-debug
+    entrypoint: [""]
+  tags:
+    - k8s
+  script:
+    - /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $IMAGE_NAME:$DOCKER_TAG
+      --destination $IMAGE_NAME:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+deploy:
+  stage: deploy
+  image: bitnami/kubectl:1.29.4
+  tags:
+    - k8s
+  environment:
+    name: production
+  script:
+    - kubectl config use-context doggyapp/pipeline-config:doggy-agent
+    - kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_NAME:$DOCKER_TAG -n default
+    - kubectl rollout status deployment/$DEPLOYMENT_NAME -n default --timeout=300s
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
