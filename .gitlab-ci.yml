@@ -49,7 +49,7 @@ build-and-push:
 
 deploy:
   stage: deploy
-  image: bitnami/kubectl:1.29.4
+  image: alpine/k8s:1.29.4
   tags:
     - k8s
   environment:
