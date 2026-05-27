@@ -146,6 +146,15 @@ public class OrganizationController {
 
     // ── User management ───────────────────────────────────────────────────────
 
+    // GET /organization/users
+    // Organization session only — returns all employees belonging to the logged-in org.
+    @GetMapping("/users")
+    public ResponseEntity<?> getUsers(HttpSession session) {
+        Organization org = (Organization) session.getAttribute("organization");
+        if (org == null) return ResponseEntity.status(401).body("Organization login required");
+        return ResponseEntity.ok(userService.getByOrganization(org.getId()));
+    }
+
     // POST /organization/user/add
     // Organization session only — creates a user belonging to the logged-in org.
     // Body: { "firstName": "...", "lastName": "...", "email": "...", "password": "..." }

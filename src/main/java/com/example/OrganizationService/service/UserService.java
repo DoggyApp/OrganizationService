@@ -25,6 +25,10 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    public List<User> getByOrganization(int orgId) {
+        return userRepo.findByOrganizationId(orgId);
+    }
+
     // Only the org can call this — orgId comes from the session, not the request body.
     public User create(User user, int orgId) {
         Organization org = organizationRepo.findById(orgId)

@@ -6,6 +6,7 @@ import com.example.OrganizationService.models.Owner;
 import com.example.OrganizationService.repo.DogRepo;
 import com.example.OrganizationService.repo.OrganizationRepo;
 import com.example.OrganizationService.repo.OwnerRepo;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +25,15 @@ public class OwnerService {
     @Autowired
     private OrganizationRepo organizationRepo;
 
+    @Transactional(readOnly = true)
     public List<Owner> getByOrganization(int orgId) {
-        return ownerRepo.findByOrganizationId(orgId);
+        List<Owner> owners = ownerRepo.findByOrganizationId(orgId);
+        owners.forEach(o -> {
+            Hibernate.initialize(o.getDogs());
+            Hibernate.initialize(o.getFriends());
+            Hibernate.initialize(o.getFavoriteOrganizations());
+        });
+        return owners;
     }
 
 }
