@@ -7,8 +7,13 @@ import com.example.OrganizationService.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -29,6 +34,14 @@ public class OrganizationController {
         try {
             Organization created = organizationService.register(org);
             session.setAttribute("organization", created);
+
+            UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(created.getEmail(), null, Collections.emptyList());
+            SecurityContext sc = SecurityContextHolder.createEmptyContext();
+            sc.setAuthentication(auth);
+            SecurityContextHolder.setContext(sc);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+
             return ResponseEntity.status(201).body(created);
         } catch (RuntimeException e) {
             return ResponseEntity.status(400).body(e.getMessage());
@@ -46,6 +59,14 @@ public class OrganizationController {
                     credentials.get("password")
             );
             session.setAttribute("organization", org);
+
+            UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(org.getEmail(), null, Collections.emptyList());
+            SecurityContext sc = SecurityContextHolder.createEmptyContext();
+            sc.setAuthentication(auth);
+            SecurityContextHolder.setContext(sc);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+
             return ResponseEntity.ok(org);
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body("Invalid credentials");

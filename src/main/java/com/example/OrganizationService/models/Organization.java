@@ -1,5 +1,6 @@
 package com.example.OrganizationService.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -41,26 +42,28 @@ public class Organization {
     @Column(name = "subscription_expiration")
     private LocalDate subscriptionExpiration;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"organization", "password"})
     private List<User> employees = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
         name = "organization_dogs",
         joinColumns = @JoinColumn(name = "organization_id"),
         inverseJoinColumns = @JoinColumn(name = "dog_id")
     )
-    @JsonIgnoreProperties({"organizations", "alerts", "likes", "notes", "vaccines", "owner"})
     private List<Dog> dogs = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("organization")
     private List<Location> locations = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Service> services = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 

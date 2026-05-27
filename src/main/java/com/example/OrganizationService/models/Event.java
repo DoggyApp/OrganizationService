@@ -25,7 +25,6 @@ public class Event {
     // Null when the event is offsite. Join room → location to get the address.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    @JsonIgnoreProperties({"location"})
     private Room room;
 
     // Only populated when room is null (offsite event).
@@ -45,7 +44,7 @@ public class Event {
         joinColumns = @JoinColumn(name = "event_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> attendees = new ArrayList<>();
+    private List<User> userAttendees = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -83,7 +82,7 @@ public class Event {
     public String getAddress()            { return address; }
     public LocalDateTime getStartTime()   { return startTime; }
     public LocalDateTime getEndTime()     { return endTime; }
-    public List<User> getAttendees()      { return attendees; }
+    public List<User> getUserAttendees()   { return userAttendees; }
     public List<Owner> getOwnerAttendees(){ return ownerAttendees; }
     public List<Dog> getDogs()            { return dogs; }
     public Integer getCreatorId()         { return creatorId; }
@@ -104,7 +103,7 @@ public class Event {
     public void setAddress(String address)          { this.address = address; }
     public void setStartTime(LocalDateTime t)       { this.startTime = t; }
     public void setEndTime(LocalDateTime t)         { this.endTime = t; }
-    public void setAttendees(List<User> attendees)  { this.attendees = attendees; }
+    public void setUserAttendees(List<User> userAttendees) { this.userAttendees = userAttendees; }
     public void setOwnerAttendees(List<Owner> o)    { this.ownerAttendees = o; }
     public void setDogs(List<Dog> dogs)             { this.dogs = dogs; }
     public void setCreator(User creator)            { this.creator = creator; }

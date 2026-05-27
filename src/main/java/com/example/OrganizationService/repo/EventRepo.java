@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface EventRepo extends JpaRepository<Event, Integer> {
 
     // Events where this user is an attendee (employee view)
-    List<Event> findByAttendees_Id(int userId);
+    List<Event> findByUserAttendees_Id(int userId);
 
     // Events where this user is an attendee, scoped to an org
-    List<Event> findByAttendees_IdAndAttendees_OrganizationId(int userId, int orgId);
+    List<Event> findByUserAttendees_IdAndUserAttendees_OrganizationId(int userId, int orgId);
 
     // Events for a specific dog, scoped to an org
     List<Event> findByDogs_IdAndDogs_Organizations_Id(int dogId, int orgId);

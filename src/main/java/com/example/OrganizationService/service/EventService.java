@@ -29,7 +29,7 @@ public class EventService {
     private LocationRepo locationRepo;
 
     public List<Event> getByUserAndOrganization(int userId, int orgId) {
-        return eventRepo.findByAttendees_IdAndAttendees_OrganizationId(userId, orgId);
+        return eventRepo.findByUserAttendees_IdAndUserAttendees_OrganizationId(userId, orgId);
     }
 
     public List<Event> getByDogAndOrganization(int dogId, int orgId) {
